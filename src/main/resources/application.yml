@@ -1,0 +1,62 @@
+##spring.application.name=food_delivery
+#
+#
+#spring:
+#  application:
+#    name: food_delivery
+#  config:
+#    activate:
+#      on-profile: dev
+#  datasource:
+#    url: jdbc:h2:mem:testdb
+#    driverClassName: org.h2.Driver
+#    username: sa
+#    password: password
+#  h2:
+#    console:
+#      enabled: true
+#---
+#spring:
+#  profiles: prod
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/food_delivery
+#    username: postgres
+#    password: postgres
+#
+#
+#springdoc:
+#  api-docs:
+#    enabled: true
+#  swagger-ui:
+#    path: /swagger-ui.html
+spring:
+  application:
+    name: food_delivery
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://localhost:5432/food_delivery
+    username: postgres
+    password: postgres
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
