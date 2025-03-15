@@ -15,4 +15,6 @@ public interface DishService {
   DishResponseDto updateDish(Long id, DishRequestDto dishRequestDto);
 
   void deleteDish(Long id);
+
+  DishResponseDto patchDish(Long id, DishRequestDto dishRequestDto);
 }

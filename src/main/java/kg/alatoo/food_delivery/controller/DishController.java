@@ -45,6 +45,14 @@ public class DishController {
     return new ResponseEntity<>(updatedDish, HttpStatus.OK);
   }
 
+  @PatchMapping("/{id}")
+  public ResponseEntity<DishResponseDto> patchDish(
+      @PathVariable Long id,
+      @RequestBody DishRequestDto dishRequestDto) {
+    DishResponseDto patchedDish = dishService.patchDish(id, dishRequestDto);
+    return new ResponseEntity<>(patchedDish, HttpStatus.OK);
+  }
+
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteDish(@PathVariable Long id) {
     dishService.deleteDish(id);

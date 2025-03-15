@@ -103,4 +103,22 @@ public class DishControllerTest {
 
     Mockito.verify(dishService, Mockito.times(1)).deleteDish(1L);
   }
+
+  @Test
+  public void testPatchDish() throws Exception {
+    DishRequestDto requestDto = new DishRequestDto("Updated Sushi", null, 15.99, null, null);
+    DishResponseDto responseDto = new DishResponseDto(4L, "Updated Sushi", "Assorted sushi rolls", 15.99, DishCategory.MAIN_COURSE, 2L);
+    Mockito.when(dishService.patchDish(4L, requestDto)).thenReturn(responseDto);
+
+    mockMvc.perform(MockMvcRequestBuilders.patch("/api/dishes/4")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"name\":\"Updated Sushi\",\"price\":15.99}"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(4L))
+        .andExpect(jsonPath("$.name").value("Updated Sushi"))
+        .andExpect(jsonPath("$.description").value("Assorted sushi rolls"))
+        .andExpect(jsonPath("$.price").value(15.99))
+        .andExpect(jsonPath("$.category").value("MAIN_COURSE"))
+        .andExpect(jsonPath("$.restaurantId").value(2L));
+  }
 }

@@ -12,5 +12,6 @@ public interface DishMapstructMapper {
   @Mapping(target = "restaurant", ignore = true)
   Dish toEntity(DishRequestDto dishRequestDto);
 
+  @Mapping(target = "restaurantId", source = "restaurant.id")
   DishResponseDto toDto(Dish dish);
 }

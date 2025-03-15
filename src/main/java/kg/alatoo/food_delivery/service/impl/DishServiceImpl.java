@@ -75,4 +75,32 @@ public class DishServiceImpl implements DishService {
     }
     dishRepository.deleteById(id);
   }
+
+  @Override
+  public DishResponseDto patchDish(Long id, DishRequestDto dishRequestDto) {
+    Dish existingDish = dishRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Dish not found with id: " + id));
+
+    if (dishRequestDto.name() != null) {
+      existingDish.setName(dishRequestDto.name());
+    }
+    if (dishRequestDto.description() != null) {
+      existingDish.setDescription(dishRequestDto.description());
+    }
+    if (dishRequestDto.price() != 0) {
+      existingDish.setPrice(dishRequestDto.price());
+    }
+    if (dishRequestDto.category() != null) {
+      existingDish.setCategory(dishRequestDto.category());
+    }
+    if (dishRequestDto.restaurantId() != null) {
+      Restaurant restaurant = restaurantRepository.findById(dishRequestDto.restaurantId())
+          .orElseThrow(() -> new RuntimeException("Restaurant not found with id: " + dishRequestDto.restaurantId()));
+      existingDish.setRestaurant(restaurant);
+    }
+
+    Dish patchedDish = dishRepository.save(existingDish);
+
+    return dishMapper.toDto(patchedDish);
+  }
 }
