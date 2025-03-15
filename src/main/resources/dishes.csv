@@ -1,0 +1,4 @@
+name,description,price,category,restaurant_id
+Burger,Delicious beef burger,5.99,MAIN_COURSE,1
+Pizza,Cheese and pepperoni pizza,8.99,APPETIZER,1
+Sushi,Assorted sushi rolls,12.99,MAIN_COURSE,2
