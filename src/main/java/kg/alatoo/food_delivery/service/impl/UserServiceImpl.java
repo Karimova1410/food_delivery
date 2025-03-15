@@ -1,5 +1,6 @@
 package kg.alatoo.food_delivery.service.impl;
 
+import java.util.List;
 import kg.alatoo.food_delivery.dto.user.UserRequestDto;
 import kg.alatoo.food_delivery.dto.user.UserResponseDto;
 import kg.alatoo.food_delivery.entity.User;
@@ -34,5 +35,35 @@ public class UserServiceImpl implements UserService {
         user.getUsername(),
         user.getRole()
     );
+  }
+
+  @Override
+  public List<UserResponseDto> findAll() {
+    return List.of();
+  }
+
+  @Override
+  public UserResponseDto findById(Long id) {
+    return null;
+  }
+
+  @Override
+  public UserResponseDto createUser(UserRequestDto userRequestDto) {
+    return null;
+  }
+
+  @Override
+  public UserResponseDto updateUser(Long id, UserRequestDto userRequestDto) {
+    return null;
+  }
+
+  @Override
+  public UserResponseDto patchUser(Long id, UserRequestDto userRequestDto) {
+    return null;
+  }
+
+  @Override
+  public void deleteUser(Long id) {
+
   }
 }
