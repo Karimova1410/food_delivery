@@ -31,33 +31,12 @@ public class RestaurantMapperImpl implements RestaurantMapper {
         .map(dishId -> dishRepository.findById(dishId))
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .peek(dish -> dish.setRestaurant(restaurant)) // Устанавливаем связь
+        .peek(dish -> dish.setRestaurant(restaurant))
         .collect(Collectors.toList());
 
     restaurant.setMenu(dishes);
     return restaurant;
   }
-//  public Restaurant toEntity(RestaurantRequestDto restaurantRequestDto) {
-//    Restaurant restaurant = Restaurant.builder()
-//        .name(restaurantRequestDto.name())
-//        .address(restaurantRequestDto.address())
-////        .menu(restaurantRequestDto.dishIds().stream()
-////            .map(dishId -> dishRepository.findById(dishId)
-////                .orElseThrow(() -> new RuntimeException("Dish not found")))
-////            .collect(Collectors.toList()))
-//        .build();
-//
-////
-//    List<Dish> dishes = restaurantRequestDto.dishIds().stream()
-//        .map(dishId -> dishRepository.findById(dishId)
-//            .filter(Optional::isPresent)
-//            .map(Optional::get)
-//            .peek(dish -> dish.setRestaurant(restaurant)) // Устанавливаем связь
-//            .collect(Collectors.toList());
-//
-//    restaurant.setMenu(dishes);
-//    return restaurant;
-//  }
 
   @Override
   public RestaurantResponseDto toDto(Restaurant restaurant) {

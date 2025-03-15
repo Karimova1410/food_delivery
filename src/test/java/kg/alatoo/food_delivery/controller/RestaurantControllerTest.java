@@ -27,25 +27,25 @@ public class RestaurantControllerTest {
 
   @Test
   public void testCreateRestaurant() throws Exception {
-    RestaurantRequestDto requestDto = new RestaurantRequestDto("Sushi Place", "123 Main St", List.of(1L, 2L));
-    RestaurantResponseDto responseDto = new RestaurantResponseDto(1L, "Sushi Place", "123 Main St", List.of(1L, 2L));
+    RestaurantRequestDto requestDto = new RestaurantRequestDto("Sushi Place", "Chui 132", List.of(1L, 2L));
+    RestaurantResponseDto responseDto = new RestaurantResponseDto(1L, "Sushi Place", "Chui 132", List.of(1L, 2L));
 
     Mockito.when(restaurantService.createRestaurant(requestDto)).thenReturn(responseDto);
 
     mockMvc.perform(MockMvcRequestBuilders.post("/api/restaurants")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"name\":\"Sushi Place\",\"address\":\"123 Main St\",\"dishIds\":[1,2]}"))
+            .content("{\"name\":\"Sushi Place\",\"address\":\"Chui 132\",\"dishIds\":[1,2]}"))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").value(1L))
         .andExpect(jsonPath("$.name").value("Sushi Place"))
-        .andExpect(jsonPath("$.address").value("123 Main St"))
+        .andExpect(jsonPath("$.address").value("Chui 132"))
         .andExpect(jsonPath("$.dishIds[0]").value(1L))
         .andExpect(jsonPath("$.dishIds[1]").value(2L));
   }
 
   @Test
   public void testGetRestaurantById() throws Exception {
-    RestaurantResponseDto responseDto = new RestaurantResponseDto(1L, "Sushi Place", "123 Main St", List.of(1L, 2L));
+    RestaurantResponseDto responseDto = new RestaurantResponseDto(1L, "Sushi Place", "Chui 132", List.of(1L, 2L));
     Mockito.when(restaurantService.getRestaurantById(1L)).thenReturn(responseDto);
 
     mockMvc.perform(MockMvcRequestBuilders.get("/api/restaurants/1")
@@ -53,7 +53,7 @@ public class RestaurantControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(1L))
         .andExpect(jsonPath("$.name").value("Sushi Place"))
-        .andExpect(jsonPath("$.address").value("123 Main St"))
+        .andExpect(jsonPath("$.address").value("Chui 132"))
         .andExpect(jsonPath("$.dishIds[0]").value(1L))
         .andExpect(jsonPath("$.dishIds[1]").value(2L));
   }
@@ -61,7 +61,7 @@ public class RestaurantControllerTest {
   @Test
   public void testPatchRestaurant() throws Exception {
     RestaurantRequestDto requestDto = new RestaurantRequestDto("Updated Sushi Place", null, null);
-    RestaurantResponseDto responseDto = new RestaurantResponseDto(1L, "Updated Sushi Place", "123 Main St", List.of(1L, 2L));
+    RestaurantResponseDto responseDto = new RestaurantResponseDto(1L, "Updated Sushi Place", "Chui 132", List.of(1L, 2L));
 
     Mockito.when(restaurantService.patchRestaurant(1L, requestDto)).thenReturn(responseDto);
 
@@ -71,14 +71,14 @@ public class RestaurantControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(1L))
         .andExpect(jsonPath("$.name").value("Updated Sushi Place"))
-        .andExpect(jsonPath("$.address").value("123 Main St"))
+        .andExpect(jsonPath("$.address").value("Chui 132"))
         .andExpect(jsonPath("$.dishIds[0]").value(1L))
         .andExpect(jsonPath("$.dishIds[1]").value(2L));
   }
 
   @Test
   public void testGetAllRestaurants() throws Exception {
-    RestaurantResponseDto restaurant1 = new RestaurantResponseDto(1L, "Sushi Place", "123 Main St", List.of(1L, 2L));
+    RestaurantResponseDto restaurant1 = new RestaurantResponseDto(1L, "Sushi Place", "Chui 132", List.of(1L, 2L));
     RestaurantResponseDto restaurant2 = new RestaurantResponseDto(2L, "Pizza Place", "456 Elm St", List.of(3L, 4L));
     List<RestaurantResponseDto> restaurants = List.of(restaurant1, restaurant2);
 
@@ -89,7 +89,7 @@ public class RestaurantControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].id").value(1L))
         .andExpect(jsonPath("$[0].name").value("Sushi Place"))
-        .andExpect(jsonPath("$[0].address").value("123 Main St"))
+        .andExpect(jsonPath("$[0].address").value("Chui 132"))
         .andExpect(jsonPath("$[0].dishIds[0]").value(1L))
         .andExpect(jsonPath("$[0].dishIds[1]").value(2L))
         .andExpect(jsonPath("$[1].id").value(2L))

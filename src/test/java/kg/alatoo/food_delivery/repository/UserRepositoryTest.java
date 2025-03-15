@@ -25,20 +25,20 @@ class UserRepositoryTest {
   @Test
   void testSaveUser() {
     User user = new User();
-    user.setUsername("testuser");
+    user.setUsername("roza");
     user.setPassword("password123");
     user.setRole(UserRole.ADMIN);
 
     User savedUser = userRepository.save(user);
 
     assertNotNull(savedUser.getId());
-    assertEquals("testuser", savedUser.getUsername());
+    assertEquals("roza", savedUser.getUsername());
   }
 
   @Test
   void testFindById() {
     User user = new User();
-    user.setUsername("john_doe");
+    user.setUsername("roza");
     user.setPassword("securepass");
     user.setRole(UserRole.ADMIN);
     User savedUser = userRepository.save(user);
@@ -46,13 +46,13 @@ class UserRepositoryTest {
     Optional<User> foundUser = userRepository.findById(savedUser.getId());
 
     assertTrue(foundUser.isPresent());
-    assertEquals("john_doe", foundUser.get().getUsername());
+    assertEquals("roza", foundUser.get().getUsername());
   }
 
   @Test
   void testDeleteUser() {
     User user = new User();
-    user.setUsername("tempuser");
+    user.setUsername("roza");
     user.setPassword("temp123");
     user.setRole(UserRole.ADMIN);
     User savedUser = userRepository.save(user);
@@ -66,18 +66,18 @@ class UserRepositoryTest {
   @Test
   void testUpdateUser() {
     User user = new User();
-    user.setUsername("originalUser");
+    user.setUsername("roza");
     user.setPassword("originalPass");
     user.setRole(UserRole.ADMIN);
     User savedUser = userRepository.save(user);
 
-    savedUser.setUsername("updatedUser");
+    savedUser.setUsername("updatedRoza");
     savedUser.setPassword("updatedPass");
     user.setRole(UserRole.ADMIN);
     User updatedUser = userRepository.save(savedUser);
 
     assertEquals(savedUser.getId(), updatedUser.getId());
-    assertEquals("updatedUser", updatedUser.getUsername());
+    assertEquals("updatedRoza", updatedUser.getUsername());
     assertEquals("updatedPass", updatedUser.getPassword());
     assertEquals(UserRole.ADMIN, updatedUser.getRole());
   }

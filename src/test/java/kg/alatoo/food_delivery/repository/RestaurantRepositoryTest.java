@@ -21,53 +21,53 @@ class RestaurantRepositoryTest {
   @Test
   void testSaveRestaurant() {
     Restaurant restaurant = Restaurant.builder()
-        .name("Pizza House")
-        .address("123 Main St")
+        .name("Ala-too")
+        .address("Ankara 8/1")
         .build();
 
     Restaurant savedRestaurant = restaurantRepository.save(restaurant);
 
     assertNotNull(savedRestaurant.getId());
-    assertEquals("Pizza House", savedRestaurant.getName());
-    assertEquals("123 Main St", savedRestaurant.getAddress());
+    assertEquals("Ala-too", savedRestaurant.getName());
+    assertEquals("Ankara 8/1", savedRestaurant.getAddress());
   }
 
   @Test
   void testFindById() {
     Restaurant restaurant = Restaurant.builder()
-        .name("Burger King")
-        .address("456 Elm St")
+        .name("Ala-too")
+        .address("Ankara 8/1")
         .build();
     Restaurant savedRestaurant = restaurantRepository.save(restaurant);
 
     Optional<Restaurant> foundRestaurant = restaurantRepository.findById(savedRestaurant.getId());
 
     assertTrue(foundRestaurant.isPresent());
-    assertEquals("Burger King", foundRestaurant.get().getName());
+    assertEquals("Ala-too", foundRestaurant.get().getName());
   }
 
   @Test
   void testUpdateRestaurant() {
     Restaurant restaurant = Restaurant.builder()
-        .name("Sushi World")
-        .address("789 Oak St")
+        .name("Ala-too")
+        .address("Ankara 8/1")
         .build();
     Restaurant savedRestaurant = restaurantRepository.save(restaurant);
 
-    savedRestaurant.setName("Updated Sushi World");
-    savedRestaurant.setAddress("999 Pine St");
+    savedRestaurant.setName("Updated Ala-too");
+    savedRestaurant.setAddress("Ankara 8/2");
     Restaurant updatedRestaurant = restaurantRepository.save(savedRestaurant);
 
     assertEquals(savedRestaurant.getId(), updatedRestaurant.getId());
-    assertEquals("Updated Sushi World", updatedRestaurant.getName());
-    assertEquals("999 Pine St", updatedRestaurant.getAddress());
+    assertEquals("Updated Ala-too", updatedRestaurant.getName());
+    assertEquals("Ankara 8/2", updatedRestaurant.getAddress());
   }
 
   @Test
   void testDeleteRestaurant() {
     Restaurant restaurant = Restaurant.builder()
-        .name("Taco Bell")
-        .address("111 Maple St")
+        .name("Ala-too")
+        .address("Ankara 8/2")
         .build();
     Restaurant savedRestaurant = restaurantRepository.save(restaurant);
 

@@ -29,7 +29,7 @@ class OrderRepositoryTest {
 
   @Test
   void testSaveOrder() {
-    User client = userRepository.save(User.builder().username("client1").build());
+    User client = userRepository.save(User.builder().username("roza").build());
     Restaurant restaurant = restaurantRepository.save(Restaurant.builder().name("Pizza Place").build());
 
     Order order = Order.builder()
@@ -48,7 +48,7 @@ class OrderRepositoryTest {
 
   @Test
   void testFindById() {
-    User client = userRepository.save(User.builder().username("client2").build());
+    User client = userRepository.save(User.builder().username("roza").build());
     Restaurant restaurant = restaurantRepository.save(Restaurant.builder().name("Burger House").build());
 
     Order order = Order.builder()
@@ -66,7 +66,7 @@ class OrderRepositoryTest {
 
   @Test
   void testUpdateOrderStatus() {
-    User client = userRepository.save(User.builder().username("client3").build());
+    User client = userRepository.save(User.builder().username("roza").build());
     Restaurant restaurant = restaurantRepository.save(Restaurant.builder().name("Sushi World").build());
 
     Order order = Order.builder()
@@ -84,7 +84,7 @@ class OrderRepositoryTest {
 
   @Test
   void testDeleteOrder() {
-    User client = userRepository.save(User.builder().username("client4").build());
+    User client = userRepository.save(User.builder().username("roza").build());
     Restaurant restaurant = restaurantRepository.save(Restaurant.builder().name("Taco Bell").build());
 
     Order order = Order.builder()
