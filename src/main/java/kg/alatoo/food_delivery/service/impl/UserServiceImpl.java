@@ -1,5 +1,6 @@
 package kg.alatoo.food_delivery.service.impl;
 
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import kg.alatoo.food_delivery.dto.user.UserRequestDto;
@@ -44,6 +45,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+//  @Transactional
   public UserResponseDto updateUser(Long id, UserRequestDto userRequestDto) {
     User existingUser = userRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
