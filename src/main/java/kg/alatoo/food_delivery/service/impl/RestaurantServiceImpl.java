@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import kg.alatoo.food_delivery.dto.restaurant.RestaurantRequestDto;
 import kg.alatoo.food_delivery.dto.restaurant.RestaurantResponseDto;
 import kg.alatoo.food_delivery.entity.Restaurant;
+import kg.alatoo.food_delivery.exception.ResourceNotFoundException;
 import kg.alatoo.food_delivery.mapper.RestaurantMapper;
 import kg.alatoo.food_delivery.repository.DishRepository;
 import kg.alatoo.food_delivery.repository.RestaurantRepository;
@@ -33,7 +34,7 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   public RestaurantResponseDto getRestaurantById(Long id) {
     Restaurant restaurant = restaurantRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
     return restaurantMapper.toDto(restaurant);
   }
 
@@ -47,7 +48,7 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   public RestaurantResponseDto updateRestaurant(Long id, RestaurantRequestDto restaurantRequestDto) {
     Restaurant existingRestaurant = restaurantRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
 
     Restaurant updatedRestaurant = restaurantMapper.toEntity(restaurantRequestDto);
     updatedRestaurant.setId(existingRestaurant.getId()); // Ensure the ID remains the same
@@ -59,7 +60,7 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   public void deleteRestaurant(Long id) {
     if (!restaurantRepository.existsById(id)) {
-      throw new RuntimeException("Restaurant not found");
+      throw new ResourceNotFoundException("Restaurant not found");
     }
     restaurantRepository.deleteById(id);
   }
@@ -67,7 +68,7 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   public RestaurantResponseDto patchRestaurant(Long id, RestaurantRequestDto restaurantRequestDto) {
     Restaurant existingRestaurant = restaurantRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
 
     if (restaurantRequestDto.name() != null) {
       existingRestaurant.setName(restaurantRequestDto.name());
@@ -78,7 +79,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     if (restaurantRequestDto.dishIds() != null && !restaurantRequestDto.dishIds().isEmpty()) {
       existingRestaurant.setMenu(restaurantRequestDto.dishIds().stream()
           .map(dishId -> dishRepository.findById(dishId)
-              .orElseThrow(() -> new RuntimeException("Dish not found")))
+              .orElseThrow(() -> new ResourceNotFoundException("Dish not found")))
           .collect(Collectors.toList()));
     }
 

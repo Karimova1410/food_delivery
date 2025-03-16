@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import kg.alatoo.food_delivery.dto.user.UserRequestDto;
 import kg.alatoo.food_delivery.dto.user.UserResponseDto;
 import kg.alatoo.food_delivery.entity.User;
+import kg.alatoo.food_delivery.exception.ResourceNotFoundException;
 import kg.alatoo.food_delivery.mapper.mapstruct.UserMapstructMapper;
 import kg.alatoo.food_delivery.repository.UserRepository;
 import kg.alatoo.food_delivery.service.UserService;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserResponseDto findById(Long id) {
     User user = userRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     return userMapper.toDto(user);
   }
 
@@ -45,10 +46,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-//  @Transactional
   public UserResponseDto updateUser(Long id, UserRequestDto userRequestDto) {
     User existingUser = userRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
     existingUser.setUsername(userRequestDto.username());
     existingUser.setPassword(userRequestDto.password());
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserResponseDto patchUser(Long id, UserRequestDto userRequestDto) {
     User existingUser = userRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
     if (userRequestDto.username() != null) {
       existingUser.setUsername(userRequestDto.username());
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public void deleteUser(Long id) {
     if (!userRepository.existsById(id)) {
-      throw new RuntimeException("User not found with id: " + id);
+      throw new ResourceNotFoundException("User not found with id: " + id);
     }
     userRepository.deleteById(id);
   }

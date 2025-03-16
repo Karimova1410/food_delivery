@@ -6,6 +6,7 @@ import kg.alatoo.food_delivery.dto.dish.DishRequestDto;
 import kg.alatoo.food_delivery.dto.dish.DishResponseDto;
 import kg.alatoo.food_delivery.entity.Dish;
 import kg.alatoo.food_delivery.entity.Restaurant;
+import kg.alatoo.food_delivery.exception.ResourceNotFoundException;
 import kg.alatoo.food_delivery.mapper.mapstruct.DishMapstructMapper;
 import kg.alatoo.food_delivery.repository.DishRepository;
 import kg.alatoo.food_delivery.repository.RestaurantRepository;
@@ -32,7 +33,7 @@ public class DishServiceImpl implements DishService {
   @Override
   public DishResponseDto findById(Long id) {
     Dish dish = dishRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Dish not found with id: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("Dish not found with id: " + id));
     return dishMapper.toDto(dish);
   }
 
@@ -41,7 +42,7 @@ public class DishServiceImpl implements DishService {
     Dish dish = dishMapper.toEntity(dishRequestDto);
 
     Restaurant restaurant = restaurantRepository.findById(dishRequestDto.restaurantId())
-        .orElseThrow(() -> new RuntimeException("Restaurant not found with id: " + dishRequestDto.restaurantId()));
+        .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id: " + dishRequestDto.restaurantId()));
     dish.setRestaurant(restaurant);
 
     Dish savedDish = dishRepository.save(dish);
@@ -60,7 +61,7 @@ public class DishServiceImpl implements DishService {
 
     if (!existingDish.getRestaurant().getId().equals(dishRequestDto.restaurantId())) {
       Restaurant restaurant = restaurantRepository.findById(dishRequestDto.restaurantId())
-          .orElseThrow(() -> new RuntimeException("Restaurant not found with id: " + dishRequestDto.restaurantId()));
+          .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id: " + dishRequestDto.restaurantId()));
       existingDish.setRestaurant(restaurant);
     }
 
@@ -71,7 +72,7 @@ public class DishServiceImpl implements DishService {
   @Override
   public void deleteDish(Long id) {
     if (!dishRepository.existsById(id)) {
-      throw new RuntimeException("Dish not found with id: " + id);
+      throw new ResourceNotFoundException("Dish not found with id: " + id);
     }
     dishRepository.deleteById(id);
   }
@@ -79,7 +80,7 @@ public class DishServiceImpl implements DishService {
   @Override
   public DishResponseDto patchDish(Long id, DishRequestDto dishRequestDto) {
     Dish existingDish = dishRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Dish not found with id: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("Dish not found with id: " + id));
 
     if (dishRequestDto.name() != null) {
       existingDish.setName(dishRequestDto.name());
@@ -95,7 +96,7 @@ public class DishServiceImpl implements DishService {
     }
     if (dishRequestDto.restaurantId() != null) {
       Restaurant restaurant = restaurantRepository.findById(dishRequestDto.restaurantId())
-          .orElseThrow(() -> new RuntimeException("Restaurant not found with id: " + dishRequestDto.restaurantId()));
+          .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id: " + dishRequestDto.restaurantId()));
       existingDish.setRestaurant(restaurant);
     }
 

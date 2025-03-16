@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import kg.alatoo.food_delivery.dto.order.OrderRequestDto;
 import kg.alatoo.food_delivery.dto.order.OrderResponseDto;
 import kg.alatoo.food_delivery.entity.Order;
+import kg.alatoo.food_delivery.exception.ResourceNotFoundException;
 import kg.alatoo.food_delivery.mapper.OrderMapper;
 import kg.alatoo.food_delivery.repository.DishRepository;
 import kg.alatoo.food_delivery.repository.OrderRepository;
@@ -42,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public OrderResponseDto findById(Long id) {
     Order order = orderRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Order not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
     return orderMapper.toDto(order);  }
 
   public OrderResponseDto createOrder(OrderRequestDto orderRequestDto) {
@@ -54,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
 
   public OrderResponseDto updateOrder(Long id, OrderRequestDto orderRequestDto) {
     Order existingOrder = orderRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Order not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
     Order updatedOrder = orderMapper.toEntity(orderRequestDto);
     updatedOrder.setId(existingOrder.getId());
@@ -66,20 +67,20 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public OrderResponseDto patchOrder(Long id, OrderRequestDto orderRequestDto) {
     Order existingOrder = orderRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Order not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
     if (orderRequestDto.clientId() != null) {
       existingOrder.setClient(userRepository.findById(orderRequestDto.clientId())
-          .orElseThrow(() -> new RuntimeException("Client not found")));
+          .orElseThrow(() -> new ResourceNotFoundException("Client not found")));
     }
     if (orderRequestDto.restaurantId() != null) {
       existingOrder.setRestaurant(restaurantRepository.findById(orderRequestDto.restaurantId())
-          .orElseThrow(() -> new RuntimeException("Restaurant not found")));
+          .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found")));
     }
     if (orderRequestDto.dishIds() != null && !orderRequestDto.dishIds().isEmpty()) {
       existingOrder.setDishes(orderRequestDto.dishIds().stream()
           .map(dishId -> dishRepository.findById(dishId)
-              .orElseThrow(() -> new RuntimeException("Dish not found")))
+              .orElseThrow(() -> new ResourceNotFoundException("Dish not found")))
           .collect(Collectors.toList()));
     }
     if (orderRequestDto.status() != null) {
@@ -87,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
     }
     if (orderRequestDto.courierId() != null) {
       existingOrder.setCourier(userRepository.findById(orderRequestDto.courierId())
-          .orElseThrow(() -> new RuntimeException("Courier not found")));
+          .orElseThrow(() -> new ResourceNotFoundException("Courier not found")));
     }
 
     Order updatedOrder = orderRepository.save(existingOrder);
@@ -96,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
 
   public void deleteOrder(Long id) {
     if (!orderRepository.existsById(id)) {
-      throw new RuntimeException("Order not found");
+      throw new ResourceNotFoundException("Order not found");
     }
     orderRepository.deleteById(id);
   }
