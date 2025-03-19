@@ -2,6 +2,7 @@ package kg.alatoo.food_delivery.controller;
 
 import kg.alatoo.food_delivery.dto.dish.DishRequestDto;
 import kg.alatoo.food_delivery.dto.dish.DishResponseDto;
+import kg.alatoo.food_delivery.controller.swagger.DishControllerSwagger;
 import kg.alatoo.food_delivery.service.DishService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/dishes")
-public class DishController {
+public class DishController implements DishControllerSwagger {
 
   private final DishService dishService;
 

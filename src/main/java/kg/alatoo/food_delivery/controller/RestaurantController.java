@@ -2,6 +2,7 @@ package kg.alatoo.food_delivery.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import kg.alatoo.food_delivery.controller.swagger.RestaurantControllerSwagger;
 import kg.alatoo.food_delivery.dto.restaurant.RestaurantRequestDto;
 import kg.alatoo.food_delivery.dto.restaurant.RestaurantResponseDto;
 import kg.alatoo.food_delivery.service.RestaurantService;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/restaurants")
-public class RestaurantController {
+public class RestaurantController implements RestaurantControllerSwagger {
 
   private final RestaurantService restaurantService;
 

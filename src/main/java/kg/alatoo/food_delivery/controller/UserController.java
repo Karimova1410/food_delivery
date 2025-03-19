@@ -2,6 +2,7 @@ package kg.alatoo.food_delivery.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import kg.alatoo.food_delivery.controller.swagger.UserControllerSwagger;
 import kg.alatoo.food_delivery.dto.user.UserRequestDto;
 import kg.alatoo.food_delivery.dto.user.UserResponseDto;
 import kg.alatoo.food_delivery.service.UserService;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/users")
 @Validated
-public class UserController {
+public class UserController implements UserControllerSwagger {
 
   private final UserService userService;
 

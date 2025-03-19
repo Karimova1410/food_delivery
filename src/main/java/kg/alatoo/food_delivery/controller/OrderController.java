@@ -1,5 +1,6 @@
 package kg.alatoo.food_delivery.controller;
 
+import kg.alatoo.food_delivery.controller.swagger.OrderControllerSwagger;
 import kg.alatoo.food_delivery.dto.order.OrderRequestDto;
 import kg.alatoo.food_delivery.dto.order.OrderResponseDto;
 import kg.alatoo.food_delivery.service.OrderService;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
-public class OrderController {
+public class OrderController implements OrderControllerSwagger {
 
   private final OrderService orderService;
 

@@ -51,7 +51,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
 
     Restaurant updatedRestaurant = restaurantMapper.toEntity(restaurantRequestDto);
-    updatedRestaurant.setId(existingRestaurant.getId()); // Ensure the ID remains the same
+    updatedRestaurant.setId(existingRestaurant.getId());
 
     Restaurant savedRestaurant = restaurantRepository.save(updatedRestaurant);
     return restaurantMapper.toDto(savedRestaurant);
