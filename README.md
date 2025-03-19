@@ -33,7 +33,6 @@ This project is a **backend system** for a **Food Delivery Application** built u
 - **Database**: H2 (for development), PostgreSQL (for production)
 - **API Documentation**: OpenAPI with SwaggerUI
 - **Testing**: JUnit, Mockito, MockMVC
-- **Authentication**: JWT (JSON Web Tokens)
 - **Data Validation**: Hibernate Validator
 - **Exception Handling**: Spring’s `@ControllerAdvice`
 
