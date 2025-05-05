@@ -1,6 +1,8 @@
 package kg.alatoo.food_delivery.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,5 +47,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     body.put("error", "Internal Server Error");
 
     return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(value = TokenRefreshException.class)
+  public ProblemDetail handleTokenRefreshException(TokenRefreshException ex) {
+    ProblemDetail errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
+    errorDetail.setProperty("description", "Invalid refresh token");
+    return errorDetail;
   }
 }

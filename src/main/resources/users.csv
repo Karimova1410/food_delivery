@@ -1,4 +1,4 @@
-username,password,role
-restaurant,restaurant123,RESTAURANT
-client1,client123,CLIENT
-courier1,courier123,COURIER
+username,password,role,name,surname,email
+restaurant,restaurant123,RESTAURANT,roza,karimova,roza1@gmail.com
+client1,client123,CLIENT,roza,karimova,roza2@gmail.com
+courier1,courier123,COURIER,roza,karimova,roza3@gmail.com

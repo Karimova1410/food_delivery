@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 import kg.alatoo.food_delivery.entity.User;
-import kg.alatoo.food_delivery.enums.UserRole;
+import kg.alatoo.food_delivery.enums.Role;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ class UserRepositoryTest {
     User user = new User();
     user.setUsername("roza");
     user.setPassword("password123");
-    user.setRole(UserRole.ADMIN);
+    user.setRole(Role.ADMIN);
 
     User savedUser = userRepository.save(user);
 
@@ -40,7 +40,7 @@ class UserRepositoryTest {
     User user = new User();
     user.setUsername("roza");
     user.setPassword("securepass");
-    user.setRole(UserRole.ADMIN);
+    user.setRole(Role.ADMIN);
     User savedUser = userRepository.save(user);
 
     Optional<User> foundUser = userRepository.findById(savedUser.getId());
@@ -54,7 +54,7 @@ class UserRepositoryTest {
     User user = new User();
     user.setUsername("roza");
     user.setPassword("temp123");
-    user.setRole(UserRole.ADMIN);
+    user.setRole(Role.ADMIN);
     User savedUser = userRepository.save(user);
 
     userRepository.deleteById(savedUser.getId());
@@ -68,18 +68,18 @@ class UserRepositoryTest {
     User user = new User();
     user.setUsername("roza");
     user.setPassword("originalPass");
-    user.setRole(UserRole.ADMIN);
+    user.setRole(Role.ADMIN);
     User savedUser = userRepository.save(user);
 
     savedUser.setUsername("updatedRoza");
     savedUser.setPassword("updatedPass");
-    user.setRole(UserRole.ADMIN);
+    user.setRole(Role.ADMIN);
     User updatedUser = userRepository.save(savedUser);
 
     assertEquals(savedUser.getId(), updatedUser.getId());
     assertEquals("updatedRoza", updatedUser.getUsername());
     assertEquals("updatedPass", updatedUser.getPassword());
-    assertEquals(UserRole.ADMIN, updatedUser.getRole());
+    assertEquals(Role.ADMIN, updatedUser.getRole());
   }
 
 }

@@ -11,7 +11,7 @@ import kg.alatoo.food_delivery.entity.Restaurant;
 import kg.alatoo.food_delivery.entity.User;
 import kg.alatoo.food_delivery.enums.DishCategory;
 import kg.alatoo.food_delivery.enums.OrderStatus;
-import kg.alatoo.food_delivery.enums.UserRole;
+import kg.alatoo.food_delivery.enums.Role;
 import kg.alatoo.food_delivery.repository.DishRepository;
 import kg.alatoo.food_delivery.repository.OrderRepository;
 import kg.alatoo.food_delivery.repository.RestaurantRepository;
@@ -19,6 +19,7 @@ import kg.alatoo.food_delivery.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -30,6 +31,7 @@ public class BootstrapDataLoader implements CommandLineRunner {
   private final RestaurantRepository restaurantRepository;
   private final DishRepository dishRepository;
   private final OrderRepository orderRepository;
+  private final PasswordEncoder passwordEncoder;
 
   @Override
   @Transactional
@@ -55,8 +57,13 @@ public class BootstrapDataLoader implements CommandLineRunner {
 
         User user = new User();
         user.setUsername(line[0]);
-        user.setPassword(line[1]);
-        user.setRole(UserRole.valueOf(line[2]));
+        user.setPassword(passwordEncoder.encode(line[1]));
+        user.setRole(Role.valueOf(line[2]));
+        user.setName(line[3]);
+        user.setSurname(line[4]);
+        user.setEmail(line[5]);
+
+
 
         userRepository.save(user);
       }

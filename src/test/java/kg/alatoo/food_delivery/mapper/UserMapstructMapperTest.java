@@ -3,7 +3,7 @@ package kg.alatoo.food_delivery.mapper;
 import kg.alatoo.food_delivery.dto.user.UserRequestDto;
 import kg.alatoo.food_delivery.dto.user.UserResponseDto;
 import kg.alatoo.food_delivery.entity.User;
-import kg.alatoo.food_delivery.enums.UserRole;
+import kg.alatoo.food_delivery.enums.Role;
 import kg.alatoo.food_delivery.mapper.mapstruct.UserMapstructMapper;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -16,7 +16,7 @@ class UserMapstructMapperTest {
 
   @Test
   void testToEntity() {
-    UserRequestDto userRequestDto = new UserRequestDto("roza", "Password123!", UserRole.CLIENT);
+    UserRequestDto userRequestDto = new UserRequestDto("roza", "Password123!", Role.CLIENT);
 
     User user = userMapstructMapper.toEntity(userRequestDto);
 
@@ -32,7 +32,7 @@ class UserMapstructMapperTest {
         .id(1L)
         .username("roza")
         .password("Password123!")
-        .role(UserRole.CLIENT)
+        .role(Role.CLIENT)
         .build();
 
     UserResponseDto userResponseDto = userMapstructMapper.toDto(user);

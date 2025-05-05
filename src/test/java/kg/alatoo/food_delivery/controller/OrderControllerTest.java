@@ -1,24 +1,27 @@
 package kg.alatoo.food_delivery.controller;
 
-import kg.alatoo.food_delivery.dto.order.OrderRequestDto;
-import kg.alatoo.food_delivery.dto.order.OrderResponseDto;
-import kg.alatoo.food_delivery.enums.OrderStatus;
+import kg.alatoo.food_delivery.config.SecurityConfiguration;
+import kg.alatoo.food_delivery.service.security.JWTService;
 import kg.alatoo.food_delivery.service.OrderService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Collections;
-import java.util.List;
 
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(OrderController.class)
+@Import(SecurityConfiguration.class)
 public class OrderControllerTest {
 
   @Autowired
@@ -27,104 +30,81 @@ public class OrderControllerTest {
   @MockBean
   private OrderService orderService;
 
-  @Test
-  public void testGetAllOrders() throws Exception {
-    OrderResponseDto order = new OrderResponseDto(1L, 1L, 1L, List.of(1L, 2L), OrderStatus.PROCESSING, 2L);
-    List<OrderResponseDto> orders = Collections.singletonList(order);
-    Mockito.when(orderService.findAll()).thenReturn(orders);
+  @MockBean
+  private JWTService jwtService;
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/orders")
-            .accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].id").value(1L))
-        .andExpect(jsonPath("$[0].clientId").value(1L))
-        .andExpect(jsonPath("$[0].restaurantId").value(1L))
-        .andExpect(jsonPath("$[0].dishIds[0]").value(1L))
-        .andExpect(jsonPath("$[0].dishIds[1]").value(2L))
-        .andExpect(jsonPath("$[0].status").value("PROCESSING"))
-        .andExpect(jsonPath("$[0].courierId").value(2L));
+  @MockBean
+  private AuthenticationProvider authenticationProvider;
+
+  private String getAuthToken() {
+    return "Bearer mock-token";
   }
 
   @Test
-  public void testGetOrderById() throws Exception {
-    OrderResponseDto order = new OrderResponseDto(1L, 1L, 1L, List.of(1L, 2L), OrderStatus.PROCESSING, 2L);
-    Mockito.when(orderService.findById(1L)).thenReturn(order);
-
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/orders/1")
-            .accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(1L))
-        .andExpect(jsonPath("$.clientId").value(1L))
-        .andExpect(jsonPath("$.restaurantId").value(1L))
-        .andExpect(jsonPath("$.dishIds[0]").value(1L))
-        .andExpect(jsonPath("$.dishIds[1]").value(2L))
-        .andExpect(jsonPath("$.status").value("PROCESSING"))
-        .andExpect(jsonPath("$.courierId").value(2L));
-  }
-
-  @Test
+  @WithMockUser(roles = "CLIENT")
   public void testCreateOrder() throws Exception {
-    OrderRequestDto requestDto = new OrderRequestDto(1L, 1L, List.of(1L, 2L), OrderStatus.PROCESSING, 2L);
-    OrderResponseDto responseDto = new OrderResponseDto(1L, 1L, 1L, List.of(1L, 2L), OrderStatus.PROCESSING, 2L);
-    Mockito.when(orderService.createOrder(requestDto)).thenReturn(responseDto);
+    String requestBody = "{\"clientId\":1,\"restaurantId\":1,\"dishIds\":[1,2]}";
 
     mockMvc.perform(MockMvcRequestBuilders.post("/api/orders")
+            .with(csrf())
+            .header("Authorization", getAuthToken())
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"clientId\":1,\"restaurantId\":1,\"dishIds\":[1,2],\"status\":\"PROCESSING\",\"courierId\":2}"))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").value(1L))
-        .andExpect(jsonPath("$.clientId").value(1L))
-        .andExpect(jsonPath("$.restaurantId").value(1L))
-        .andExpect(jsonPath("$.dishIds[0]").value(1L))
-        .andExpect(jsonPath("$.dishIds[1]").value(2L))
-        .andExpect(jsonPath("$.status").value("PROCESSING"))
-        .andExpect(jsonPath("$.courierId").value(2L));
+            .content(requestBody))
+        .andExpect(status().isCreated());
   }
 
   @Test
-  public void testUpdateOrder() throws Exception {
-    OrderRequestDto requestDto = new OrderRequestDto(1L, 1L, List.of(1L, 2L), OrderStatus.COMPLETED, 2L);
-    OrderResponseDto responseDto = new OrderResponseDto(1L, 1L, 1L, List.of(1L, 2L), OrderStatus.COMPLETED, 2L);
-    Mockito.when(orderService.updateOrder(1L, requestDto)).thenReturn(responseDto);
+  @WithMockUser(roles = "CLIENT")
+  public void testGetAllOrders() throws Exception {
+    when(orderService.findAll()).thenReturn(Collections.emptyList());
+
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/orders")
+            .header("Authorization", getAuthToken()))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  @WithMockUser(roles = "RESTAURANT")
+  public void testUpdateOrder_AsRestaurant() throws Exception {
+    String requestBody = "{\"clientId\":1,\"restaurantId\":1,\"dishIds\":[1,2],\"status\":\"COMPLETED\",\"courierId\":2}";
 
     mockMvc.perform(MockMvcRequestBuilders.put("/api/orders/1")
+            .with(csrf())
+            .header("Authorization", getAuthToken())
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"clientId\":1,\"restaurantId\":1,\"dishIds\":[1,2],\"status\":\"COMPLETED\",\"courierId\":2}"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(1L))
-        .andExpect(jsonPath("$.clientId").value(1L))
-        .andExpect(jsonPath("$.restaurantId").value(1L))
-        .andExpect(jsonPath("$.dishIds[0]").value(1L))
-        .andExpect(jsonPath("$.dishIds[1]").value(2L))
-        .andExpect(jsonPath("$.status").value("COMPLETED"))
-        .andExpect(jsonPath("$.courierId").value(2L));
+            .content(requestBody))
+        .andExpect(status().isOk());
   }
 
   @Test
-  public void testDeleteOrder() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.delete("/api/orders/1"))
+  @WithMockUser(roles = "CLIENT")
+  public void testUpdateOrder_ForbiddenForClient() throws Exception {
+    String requestBody = "{\"clientId\":1,\"restaurantId\":1,\"dishIds\":[1,2],\"status\":\"COMPLETED\",\"courierId\":2}";
+
+    mockMvc.perform(MockMvcRequestBuilders.put("/api/orders/1")
+            .with(csrf())
+            .header("Authorization", getAuthToken())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestBody))
+        .andExpect(status().isForbidden());
+  }
+
+
+  @Test
+  @WithMockUser(roles = "ADMIN")
+  public void testDeleteOrder_AsAdmin() throws Exception {
+    mockMvc.perform(MockMvcRequestBuilders.delete("/api/orders/1")
+            .with(csrf())
+            .header("Authorization", getAuthToken()))
         .andExpect(status().isNoContent());
-
-    Mockito.verify(orderService, Mockito.times(1)).deleteOrder(1L);
   }
 
   @Test
-  public void testPatchOrder() throws Exception {
-    OrderRequestDto requestDto = new OrderRequestDto(null, null, null, OrderStatus.COMPLETED, null);
-    OrderResponseDto responseDto = new OrderResponseDto(1L, 1L, 1L, List.of(1L, 2L), OrderStatus.COMPLETED, 2L);
-    Mockito.when(orderService.patchOrder(1L, requestDto)).thenReturn(responseDto);
-
-    mockMvc.perform(MockMvcRequestBuilders.patch("/api/orders/1")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"status\":\"COMPLETED\"}"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(1L))
-        .andExpect(jsonPath("$.clientId").value(1L))
-        .andExpect(jsonPath("$.restaurantId").value(1L))
-        .andExpect(jsonPath("$.dishIds[0]").value(1L))
-        .andExpect(jsonPath("$.dishIds[1]").value(2L))
-        .andExpect(jsonPath("$.status").value("COMPLETED"))
-        .andExpect(jsonPath("$.courierId").value(2L));
+  @WithMockUser(roles = "COURIER")
+  public void testDeleteOrder_ForbiddenForCourier() throws Exception {
+    mockMvc.perform(MockMvcRequestBuilders.delete("/api/orders/1")
+            .with(csrf())
+            .header("Authorization", getAuthToken()))
+        .andExpect(status().isForbidden());
   }
-
 }

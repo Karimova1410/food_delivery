@@ -1,10 +1,9 @@
 package kg.alatoo.food_delivery.integration;
 
-import jakarta.transaction.Transactional;
 import kg.alatoo.food_delivery.dto.user.UserRequestDto;
 import kg.alatoo.food_delivery.dto.user.UserResponseDto;
 import kg.alatoo.food_delivery.entity.User;
-import kg.alatoo.food_delivery.enums.UserRole;
+import kg.alatoo.food_delivery.enums.Role;
 import kg.alatoo.food_delivery.repository.DishRepository;
 import kg.alatoo.food_delivery.repository.OrderRepository;
 import kg.alatoo.food_delivery.repository.RestaurantRepository;
@@ -49,7 +48,7 @@ public class UserIntegrationTest {
     UserRequestDto userRequestDto = new UserRequestDto(
         "roza",
         "P@assword123",
-        UserRole.CLIENT
+        Role.CLIENT
     );
 
     ResponseEntity<UserResponseDto> response = restTemplate.postForEntity(
@@ -61,11 +60,11 @@ public class UserIntegrationTest {
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     assertThat(response.getBody()).isNotNull();
     assertThat(response.getBody().username()).isEqualTo("roza");
-    assertThat(response.getBody().role()).isEqualTo(UserRole.CLIENT);
+    assertThat(response.getBody().role()).isEqualTo(Role.CLIENT);
 
     User savedUser = userRepository.findById(response.getBody().id()).orElseThrow();
     assertThat(savedUser.getUsername()).isEqualTo("roza");
-    assertThat(savedUser.getRole()).isEqualTo(UserRole.CLIENT);
+    assertThat(savedUser.getRole()).isEqualTo(Role.CLIENT);
   }
 
   @Test
@@ -73,7 +72,7 @@ public class UserIntegrationTest {
     User user = userRepository.save(User.builder()
         .username("roza")
         .password("P@assword123")
-        .role(UserRole.CLIENT)
+        .role(Role.CLIENT)
         .build());
 
     ResponseEntity<UserResponseDto> response = restTemplate.getForEntity(
@@ -85,7 +84,7 @@ public class UserIntegrationTest {
     assertThat(response.getBody()).isNotNull();
     assertThat(response.getBody().id()).isEqualTo(user.getId());
     assertThat(response.getBody().username()).isEqualTo("roza");
-    assertThat(response.getBody().role()).isEqualTo(UserRole.CLIENT);
+    assertThat(response.getBody().role()).isEqualTo(Role.CLIENT);
   }
 
   @Test
@@ -93,14 +92,14 @@ public class UserIntegrationTest {
     User user = userRepository.save(User.builder()
         .username("roza")
         .password("P@assword123")
-        .role(UserRole.CLIENT)
+        .role(Role.CLIENT)
         .build());
     System.out.println(user);
 
     UserRequestDto updateRequest = new UserRequestDto(
         "updatedRoza",
         "NewPassword123@",
-        UserRole.ADMIN
+        Role.ADMIN
     );
 
     ResponseEntity<Void> response = restTemplate.exchange(
@@ -112,7 +111,7 @@ public class UserIntegrationTest {
 
     User updatedUser = userRepository.findById(user.getId()).orElseThrow();
     assertThat(updatedUser.getUsername()).isEqualTo("updatedRoza");
-    assertThat(updatedUser.getRole()).isEqualTo(UserRole.ADMIN);
+    assertThat(updatedUser.getRole()).isEqualTo(Role.ADMIN);
   }
 
   @Test
@@ -120,7 +119,7 @@ public class UserIntegrationTest {
     User user = userRepository.save(User.builder()
         .username("roza")
         .password("P@assword123")
-        .role(UserRole.CLIENT)
+        .role(Role.CLIENT)
         .build());
 
     restTemplate.delete("/api/users/" + user.getId());

@@ -2,7 +2,7 @@ package kg.alatoo.food_delivery.dto.user;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import kg.alatoo.food_delivery.enums.UserRole;
+import kg.alatoo.food_delivery.enums.Role;
 import lombok.Builder;
 
 @Builder
@@ -17,7 +17,7 @@ public record UserRequestDto(
     )
     String password,
 
-    UserRole role
+    Role role
 ) {
 
 }

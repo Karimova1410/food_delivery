@@ -5,7 +5,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import kg.alatoo.food_delivery.dto.user.UserRequestDto;
-import kg.alatoo.food_delivery.enums.UserRole;
+import kg.alatoo.food_delivery.enums.Role;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ class UserRequestDtoTest {
     UserRequestDto user = UserRequestDto.builder()
         .username("ab")
         .password("Roza2004@")
-        .role(UserRole.CLIENT)
+        .role(Role.CLIENT)
         .build();
 
     Set<ConstraintViolation<UserRequestDto>> violations = validator.validate(user);
@@ -41,7 +41,7 @@ class UserRequestDtoTest {
     UserRequestDto user = UserRequestDto.builder()
         .username("a".repeat(51))
         .password("Roza2004@")
-        .role(UserRole.CLIENT)
+        .role(Role.CLIENT)
         .build();
 
     Set<ConstraintViolation<UserRequestDto>> violations = validator.validate(user);
@@ -54,7 +54,7 @@ class UserRequestDtoTest {
     UserRequestDto user = UserRequestDto.builder()
         .username("RozaKarimova")
         .password("Roza21@")
-        .role(UserRole.CLIENT)
+        .role(Role.CLIENT)
         .build();
 
     Set<ConstraintViolation<UserRequestDto>> violations = validator.validate(user);
@@ -67,7 +67,7 @@ class UserRequestDtoTest {
     UserRequestDto user = UserRequestDto.builder()
         .username("RozaKarimova")
         .password("rozaroza")
-        .role(UserRole.CLIENT)
+        .role(Role.CLIENT)
         .build();
 
     Set<ConstraintViolation<UserRequestDto>> violations = validator.validate(user);
@@ -83,7 +83,7 @@ class UserRequestDtoTest {
     UserRequestDto user = UserRequestDto.builder()
         .username("RozaKarimova")
         .password("Roza2004@")
-        .role(UserRole.CLIENT)
+        .role(Role.CLIENT)
         .build();
 
     Set<ConstraintViolation<UserRequestDto>> violations = validator.validate(user);

@@ -13,6 +13,20 @@ spring:
       path: /h2
       enabled: true
 
+springdoc:
+  cache:
+    disabled: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+
+security:
+  jwt:
+    secret-key: f8bcd7f7853659ebe3e7777c9229e3e0f944820e76de3bb0181ed0fec1fb5f41
+    expiration-time: 900000
+    refresh-expiration-time: 86400000
+
 ---
 
 spring:
@@ -22,10 +36,16 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/food_delivery
     username: postgres
-    password: postgres
+    password: 1234
 
 springdoc:
   api-docs:
     enabled: true
   swagger-ui:
     path: /swagger-ui.html
+
+security:
+  jwt:
+    secret-key: f8bcd7f7853659ebe3e7777c9229e3e0f944820e76de3bb0181ed0fec1fb5f41
+    expiration-time: 900000
+    refresh-expiration-time: 86400000

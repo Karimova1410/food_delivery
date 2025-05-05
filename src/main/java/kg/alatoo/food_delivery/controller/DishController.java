@@ -7,6 +7,7 @@ import kg.alatoo.food_delivery.service.DishService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,6 +34,7 @@ public class DishController implements DishControllerSwagger {
     return new ResponseEntity<>(dishes, HttpStatus.OK);
   }
 
+  @PreAuthorize("hasRole('RESTAURANT')")
   @GetMapping("/{id}")
   public ResponseEntity<DishResponseDto> getDishById(@PathVariable Long id) {
     DishResponseDto dish = dishService.findById(id);
