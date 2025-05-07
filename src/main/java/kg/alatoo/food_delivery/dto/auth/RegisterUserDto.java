@@ -28,15 +28,6 @@ public class RegisterUserDto {
   public void setRole(Role role) {
     this.role = role;
   }
-//  private List<Role> roles;
-//
-//  public List<Role> getRoles() {
-//    return roles;
-//  }
-//
-//  public void setRoles(List<Role> roles) {
-//    this.roles = roles;
-//  }
 
   public String getEmail() {
     return email;

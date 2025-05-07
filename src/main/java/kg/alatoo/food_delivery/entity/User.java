@@ -29,6 +29,16 @@ public class User {
   private String surname;
   private String username;
 
+  private String provider;
+
+  public String getProvider() {
+    return provider;
+  }
+
+  public void setProvider(String provider) {
+    this.provider = provider;
+  }
+
   public String getUsername() {
     return username;
   }

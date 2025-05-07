@@ -1,5 +1,6 @@
 package kg.alatoo.food_delivery.controller;
 
+import kg.alatoo.food_delivery.controller.swagger.AuthenticationControllerSwagger;
 import kg.alatoo.food_delivery.dao.UserDetailsDao;
 import kg.alatoo.food_delivery.dto.auth.LoginResponse;
 import kg.alatoo.food_delivery.dto.auth.LoginUserDto;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/auth")
 @RestController
-public class AuthenticationController {
+public class AuthenticationController implements AuthenticationControllerSwagger {
 
   private final JWTService jwtService;
   private final AuthenticationService authenticationService;
