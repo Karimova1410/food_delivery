@@ -1,13 +1,16 @@
 # Food Delivery Backend System
 
 ## Overview
-This project is a **backend system** for a **Food Delivery Application** built using the **Spring Framework**. It provides functionalities such as user management, restaurant management, menu management, order management, and delivery tracking. The system is designed to be scalable, secure, and well-documented, making it easy to integrate with frontend applications.
+This project is a **backend system** for a **Food Delivery Application** built using the **Spring Framework**. upports user authentication, restaurant management, menu management, and order processing with JWT and OAuth2 (Google/GitHub) authentication. The system is designed to be scalable, secure, and well-documented, making it easy to integrate with frontend applications.
 
 ---
 
 ## Features
 1. **User Management**:
-   - User registration.
+   - Email/password registration and login
+   - Social login via Google and GitHub
+   - JWT token authentication
+   - Role-based access (ADMIN, CLIENT, RESTAURANT, COURIER)
    - Profile updates.
    - View order history.
 
@@ -35,15 +38,26 @@ This project is a **backend system** for a **Food Delivery Application** built u
 - **Testing**: JUnit, Mockito, MockMVC
 - **Data Validation**: Hibernate Validator
 - **Exception Handling**: Spring’s `@ControllerAdvice`
+- **Spring Security**
+- **JWT & OAuth2**
 
+---
+### SecurityConfiguration Class
+The main security configuration handles:
+- JWT authentication filter
+- OAuth2 social login
+- Role-based authorization
+- CORS configuration
+  
 ---
 
 ## Database Schema
 The database consists of the following tables:
-1. **User**: `id`, `name`, `email`, `password`
+1. **User**: `id`, `name`, `email`, `password`, `role`
 2. **Restaurant**: `id`, `name`, `address`
 3. **Menu**: `id`, `restaurant_id`, `name`, `price`, `description`, `category`
 4. **Order**: `id`, `user_id`, `restaurant_id`, `status`, `dishes`, `courier_id`
+5. **RefreshToken**: `id`, `user_id`, `token`, `expiry_date`
 
 ---
 
